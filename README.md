@@ -25,24 +25,97 @@ Follow these steps to install and run the Warthog Wallet Extension:
 
    cd warthog-wallet-extension
    ```
+2. Make **.env** file and fix the variables
 
-2. Install dependencies:
+   Make **.env** file by renaming **.env.sample** file.
+   ```bash
+   mv .env.sample .env
+   ```
+
+   Fix the variables
+
+3. Install dependencies:
 
    ```bash
    npm install
    ```
 
-3. Start the development server:
+4. Start the development server:
 
    ```bash
    npm run dev
    ```
 
-4. Build the extension for production:
+5. Build the extension for production:
 
    ```bash
    npm run build
    ```
+   
+## ⚙️ Building a Firefox Add-on as an XPI
+
+Follow this simple guide to build your Firefox extension into an XPI file, ready for testing or distribution!
+
+---
+
+### **Step 1: Move to Your Build Directory**
+Ensure you're in the correct directory where your extension files are located.
+
+```bash
+cd build
+```
+
+---
+
+### **Step 2: Install `web-ext` Globally**
+`web-ext` is a Mozilla-provided tool that helps validate, build, and run browser extensions. Install it globally using npm:
+
+```bash
+npm install --global web-ext
+```
+
+> **Note:** You need to have [Node.js](https://nodejs.org/) and npm installed on your system.
+
+---
+
+### **Step 3: Lint and Build Your Extension**
+
+1. **Run the Linter**: Ensure your add-on files are valid and error-free.
+   ```bash
+   web-ext lint
+   ```
+   This step will check for any issues in your code or `manifest.json` file. Fix any reported errors before proceeding.
+
+2. **Build the Extension**:
+   Generate a packaged `.zip` file for your extension:
+   ```bash
+   web-ext build
+   ```
+   This will create a `web-ext-artifacts` folder containing the zip file.
+
+---
+
+### **Step 4: Rename the Zip File to XPI**
+Firefox extensions use the `.xpi` format. Simply rename the `.zip` file to `.xpi`:
+
+```bash
+mv web-ext-artifacts/your-extension.zip your-extension.xpi
+```
+
+> **Tip**: For automation, you can include this step in your build script (e.g., `npm run build`).
+
+---
+
+### **Step 5: Test Your XPI Add-on**
+
+1. Open Firefox.
+2. Navigate to `about:config`. Search for **xpinstall.signatures.required**. Set it to **false**
+3. Navigate to `about:addons`.
+4. Click the gear icon ⚙️ , select **"Debug Add-ons"** and **"Load Temporary Add-on..."**
+5. Choose your newly built `.xpi` file and confirm installation.
+
+---
+
 
 ## 📄 Manifest Files
 

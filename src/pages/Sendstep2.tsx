@@ -36,7 +36,7 @@ const networks: Network[] = [
 
 function SendFinalStep() {
 
-    const { password, selectedWalletIndex, nameList, walletList, tmpDestinationWallet, visibleWalletList, setSelectedWalletIndex, setName, setWallet, getPrivateKeyFromIndex } = useWallet();
+    const { password, selectedWalletIndex, selectedNodeIndex, nameList, walletList, nodeList, tmpDestinationWallet, visibleWalletList, setSelectedWalletIndex, setName, setWallet, getPrivateKeyFromIndex } = useWallet();
     const navigate = useNavigate();
 
     const [accounts, setAccounts] = useState<AccountType[]>([]);
@@ -74,13 +74,13 @@ function SendFinalStep() {
 
         try {
             // Replace this with your actual transaction logic
-            const headResponse = (await axios.get(`${import.meta.env.VITE_APP_API_URL}/chain/head`)).data;
+            const headResponse = (await axios.get(`${nodeList[selectedNodeIndex]}/chain/head`)).data;
             const pinHash = headResponse.data.pinHash;
             const pinHeight = headResponse.data.pinHeight as number;
             const nonceId = nonce + 1;
             setNonce(nonceId);
             const rawFeeE8 = "9999";
-            const result = (await axios.get(`${import.meta.env.VITE_APP_API_URL}/tools/encode16bit/from_e8/` + rawFeeE8)).data;
+            const result = (await axios.get(`${nodeList[selectedNodeIndex]}/tools/encode16bit/from_e8/` + rawFeeE8)).data;
             const feeE8 = result.data.roundedE8;
 
             const buf1 = Buffer.from(pinHash, "hex");
@@ -136,7 +136,7 @@ function SendFinalStep() {
 
             console.log(`**** postdata:`, postdata);
 
-            axios.post(`${import.meta.env.VITE_APP_API_URL}/transaction/add`, postdata).then((res) => {
+            axios.post(`${nodeList[selectedNodeIndex]}/transaction/add`, postdata).then((res) => {
                 console.log(`**** res:`, res.data);
                 if(res.data?.error) {
                     setTransactionStatus('error');
