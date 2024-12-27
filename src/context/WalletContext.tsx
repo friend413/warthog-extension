@@ -10,6 +10,7 @@ interface WalletContextProps {
     walletList: string[];
     nameList: string[];
     nodeList: string[];
+    nodeNameList: string[];
     visibleWalletList: boolean[];
     selectedWalletIndex: number;
     selectedNodeIndex: number;
@@ -23,6 +24,7 @@ interface WalletContextProps {
     setPassword: (password: string) => void;
     setWalletList: (walletList: string[]) => void;
     setNodeList: (nodeList: string[]) => void;
+    setNodeNameList: (nodeNameList: string[]) => void;
     setNameList: (nameList: string[]) => void;
     setSelectedNodeIndex: (selectedNodeIndex: number) => void;
     setVisibleWalletList: (visibleWalletList: boolean[]) => void;
@@ -37,6 +39,7 @@ interface WalletContextProps {
     importWallet: (seedPhrase: string) => void;
     setWalletListState: (walletList: string[]) => void;
     setNodeListState: (nodeList: string[]) => void;
+    setNodeNameListState: (nodeNameList: string[]) => void;
     setNameListState: (nameList: string[]) => void;
     setSelectedWalletIndexState: (selectedWalletIndex: number) => void;
     setSelectedNodeIndexState: (selectedNodeIndex: number) => void;
@@ -54,6 +57,15 @@ const defaultNodeList = [
     'https://dev.node-s.com:3001'
 ];
 
+const defaultNodeNameList = [
+    'Main node',
+    'Quick node',
+    'Global node',
+    'Public node',
+    'Epic node',
+    'Official node'
+];
+
 const WalletContext = createContext<WalletContextProps | undefined>(undefined);
 
 const ENCRYPTION_KEY = import.meta.env.VITE_APP_ENCRYPTION_KEY || "encryption_key";
@@ -68,6 +80,7 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     const [selectedNodeIndex, setSelectedNodeIndexState] = useState<number>(0);
     const [nameList, setNameListState] = useState<string[]>([]);
     const [nodeList, setNodeListState] = useState<string[]>([]);
+    const [nodeNameList, setNodeNameListState] = useState<string[]>([]);
     const [token, setTokenState] = useState<string | null>(null);
     const [visibleWalletList, setVisibleWalletListState] = useState<boolean[]>([]);
     const [tmpDestinationWallet, setTmpDestinationWalletState] = useState<string | null>(null);
@@ -156,6 +169,7 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
             setVisibleWalletList([true]);
             setSelectedWalletIndex(0);
             setNodeList(defaultNodeList);
+            setNodeNameList(defaultNodeNameList);
             setName("Account 0");
             console.log("***** walletList length", walletList.length);
 
@@ -214,6 +228,7 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         setVisibleWalletList([true]);
         setSelectedWalletIndex(0);
         setNodeList(defaultNodeList);
+        setNodeNameList(defaultNodeNameList);
         console.log("defaultNodeList", defaultNodeList)
         setName("Account 0");
         console.log("***** walletList length", walletList.length);
@@ -260,6 +275,11 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     const setNodeList = (nodeList: string[]): void => {
         setNodeListState(nodeList);
         saveToBrowserStorage("nodeList", nodeList.join(","));
+    }
+
+    const setNodeNameList = (nodeNameList: string[]): void => {
+        setNodeNameListState(nodeNameList);
+        saveToBrowserStorage("nodeNameList", nodeNameList.join(","));
     }
 
     const setNameList = (nameList: string[]): void => {
@@ -309,7 +329,8 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         loadFromChromeStorage("wallet", setWalletState);
         loadFromChromeStorage("walletList", (walletList) => setWalletListState(walletList ? walletList.split(",") : []));
         loadFromChromeStorage("nameList", (nameList) => setNameListState(nameList ? nameList.split(",") : []));
-        loadFromChromeStorage("nodeList", (nodeList) => setNodeList(nodeList ? nodeList.split(",") : []));
+        loadFromChromeStorage("nodeList", (nodeList) => setNodeListState(nodeList ? nodeList.split(",") : []));
+        loadFromChromeStorage("nodeNameList", (nodeNameList) => setNodeNameListState(nodeNameList ? nodeNameList.split(",") : []));
         loadFromChromeStorage("visibleWalletList", (visibleWalletList) => {
             const boolArray = visibleWalletList ? visibleWalletList.split(",").map(val => val === "true") : [];
             setVisibleWalletListState(boolArray);
@@ -343,6 +364,7 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
                 token,
                 walletList,
                 nodeList,
+                nodeNameList,
                 nameList,
                 selectedWalletIndex,
                 selectedNodeIndex,
@@ -355,6 +377,7 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
                 setName,
                 setWalletList,
                 setNodeList,
+                setNodeNameList,
                 setNameList,
                 setVisibleWalletList,
                 setSelectedWalletIndex,
@@ -366,6 +389,7 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
                 addAccount,
                 setWalletListState,
                 setNodeListState,
+                setNodeNameListState,
                 setNameListState,
                 setSelectedWalletIndexState,
                 setSelectedNodeIndexState,

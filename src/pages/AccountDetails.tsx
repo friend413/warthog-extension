@@ -104,7 +104,7 @@ function AccountDetails() {
                     alt="QR Code to receive payment"
                     className="w-32 h-32"
                 />
-                <div className="text-sm text-gray-200">{wallet || "No wallet connected"}</div>
+                <div className="text-sm text-gray-200 cursor-pointer" onClick={handleCopyAddress}>{wallet || "No wallet connected"}</div>
             </div>
 
             <div className="flex justify-center gap-10 mt-6">

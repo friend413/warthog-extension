@@ -122,7 +122,7 @@ function ManageAccounts() {
                         <h3 className="text-white text-xl font-semibold mb-4">Add new Account</h3>
                         <input
                             type="text"
-                            placeholder="Wallet Name"
+                            placeholder="Account Name"
                             value={newAccountName}
                             onChange={(e) => setNewAccountName(e.target.value)}
                             className="w-full min-w-[150px] bg-[#2A2A2A] border border-primary/25 rounded-lg p-3 text-white focus:outline-none focus:border-primary"
